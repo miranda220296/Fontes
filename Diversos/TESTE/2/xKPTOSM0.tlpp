@@ -1,0 +1,301 @@
+#INCLUDE "Protheus.ch"
+#INCLUDE "tlpp-core.th"
+/*/{Protheus.doc} xKPTOSM0
+Rotina realiza a exportação de dados 
+@type function
+@version 1.0  
+@author 
+@since 05/12/2023
+
+{
+    "log": {
+        "Ambiente": {
+            "EmpFil": "10/0101",
+            "Empresa": "Captalys Companhia de Credito",
+            "Filial": "Companhia de Credito",
+            "Environment": "CMCGX2_HOM",
+            "StartPath": "/system/",
+            "RootPath": "d:\\outsourcing\\totvs\\protheus_data",
+            "Versao": "TOTVS ServiÃ§os MSSQL Cmcgx2_hom",
+            "User": "000110 SSO1",
+            "Computer": "DESKTOP-0G1ITDJ"
+        }
+    },
+    "cEmpAnt": "10",
+    "id": "SM001",
+    "rotina": "xKPTOSM0",
+    "data_env": "2023-12-05T00:00:00-03:00",
+    "data": [
+        {
+            "M0_CODIGO": "10",
+            "M0_CODFIL": "0101",
+            "M0_NOME": "CAPTALYS CREDITO",
+            "M0_FILIAL": "COMPANHIA DE CREDITO",
+            "M0_CGC": "23361030000129",
+            "M0_TEL": "55-11-20702810"
+        },
+        {
+            "M0_CODIGO": "11",
+            "M0_CODFIL": "0101",
+            "M0_NOME": "CAPTALYS SERVICOS",
+            "M0_FILIAL": "SERVICOS",
+            "M0_CGC": "13198591000103",
+            "M0_TEL": "55-11-33306355"
+        },
+        {
+            "M0_CODIGO": "75",
+            "M0_CODFIL": "0124",
+            "M0_NOME": "EAF",
+            "M0_FILIAL": "FILIAL PE",
+            "M0_CGC": "45282870002182",
+            "M0_TEL": "55-11-99999999"
+        }
+    ]
+}
+ 
+/*/
+User Function xKPTOSM0() 
+	Local cIDNew    := ""
+	Local aArea 	:= FWGetArea()
+	Local cQuery	:= ""
+	Local cAliasQry	:= ""
+	Local cPostJson	:= ""
+	Local oData     := Nil 
+	Local oLog 		:= Nil 
+	Local oItem		:= Nil
+	Local oRetorno	:= Nil 
+	Local aRetorno	:= {} 
+	Local lRet      := .F.
+
+	// ---------------------------------------------------------------
+	// RECUPERA O CONTEUDO DE CADA CAMPO DO ALIAS FILHO
+	oData := JsonObject():New()
+	oData["log"] 	  := JsonObject():New()
+	
+	oLog := JsonObject():New()
+	oLog["EmpFil"]      := cEmpAnt + "/" + cFilAnt 
+	oLog["Empresa"]     := Capital(AllTrim(GetAdvFVal("SM0","M0_NOMECOM",cEmpAnt + cFilAnt,1,""))) 
+	oLog["Filial"]      := Capital(AllTrim(GetAdvFVal("SM0","M0_FILIAL" ,cEmpAnt + cFilAnt,1,""))) 
+	oLog["Environment"] := GetEnvServer()  
+	oLog["StartPath"]   := GetSrvProfString("StartPath","")
+	oLog["RootPath"]    := GetSrvProfString("RootPath" ,"") 
+	oLog["Versao"]      := GetVersao(.T.) 
+	oLog["User"]        := __cUserId + " " +  cUserName 
+	oLog["Computer"]    := GetComputerName() 
+
+	oData["log"]["Ambiente"] := oLog
+
+	oData["cEmpAnt"]  := cEmpAnt
+	oData["id"]		  := "SM001"
+	oData["rotina"]	  := "KPTOSM0"
+	oData["data_env"] := FwTimeStamp(5,Date(),"00:00:00") 
+	oData["data"]	  := {} 
+
+	cQuery := " SELECT" 
+	cQuery += "   M0_CODIGO  ,"
+	cQuery += "   M0_CODFIL  ,"
+	cQuery += "   M0_NOME    ,"
+	cQuery += "   M0_FILIAL  ,"
+	cQuery += "   M0_CGC     ,"
+	cQuery += "   M0_TEL     ,"
+	cQuery += "   M0_NOMECOM ,"
+	cQuery += "   M0_FULNAME ,"
+	cQuery += "   M0_FAX	 ,"	
+	cQuery += "   M0_EQUIP	 ,"
+	cQuery += "   M0_TPINSC ,"
+	cQuery += "   M0_CEI	 ,"	
+	cQuery += "   M0_INSC ,"
+	cQuery += "   M0_INSCM	 ,"
+	cQuery += "   M0_ENDENT ,"
+	cQuery += "   M0_COMPENT ,"
+	cQuery += "   M0_BAIRENT ,"
+	cQuery += "   M0_CIDENT ,"
+	cQuery += "   M0_ESTENT ,"
+	cQuery += "   M0_CEPENT ,"
+	cQuery += "   M0_CODMUN ,"
+	cQuery += "   M0_ENDCOB ,"
+	cQuery += "   M0_COMPCOB ,"
+	cQuery += "   M0_BAIRCOB ,"
+	cQuery += "   M0_CIDCOB ,"
+	cQuery += "   M0_ESTCOB ,"
+	cQuery += "   M0_CEPCOB ,"
+	cQuery += "   M0_PRODRUR ,"
+	cQuery += "   M0_FPAS	 ,"	
+	cQuery += "   M0_NATJUR ,"
+	cQuery += "   M0_DTBASE ,"
+	cQuery += "   M0_CNAE	 ,"	
+	cQuery += "   M0_ACTRAB ,"
+	cQuery += "   M0_NUMPROP ,"
+	cQuery += "   M0_MODEND ,"
+	cQuery += "   M0_MODINSC ,"
+	cQuery += "   M0_CAUSA	 ,"
+	cQuery += "   M0_INSCANT ,"
+	cQuery += "   M0_TPESTAB ,"
+	cQuery += "   M0_TEL_IMP ,"
+	cQuery += "   M0_FAX_IMP ,"
+	cQuery += "   M0_IMP_CON ,"
+	cQuery += "   M0_TEL_PO ,"
+	cQuery += "   M0_FAX_PO ,"
+	cQuery += "   M0_CODZOSE ,"
+	cQuery += "   M0_DESZOSE ,"
+	cQuery += "   M0_COD_ATV ,"
+	cQuery += "   M0_INS_SUF ,"
+	cQuery += "   M0_NIRE	 ,"	
+	cQuery += "   M0_DTRE	 ,"	
+	cQuery += "   M0_DSCCNA ,"
+	cQuery += "   M0_ASSPAT1 ,"
+	cQuery += "   M0_ASSPAT2 ,"
+	cQuery += "   M0_ASSPAT3 ,"
+	cQuery += "   M0_RNTRC	 ,"
+	cQuery += "   M0_DTRNTRC ,"
+	cQuery += "   M0_SEQUENC ,"
+	cQuery += "   M0_DOCSEQ ,"
+	cQuery += "   M0_EMERGEN ,"
+	cQuery += "   M0_LIBMOD ,"
+	cQuery += "   M0_DTAUTOR ,"
+	cQuery += "   M0_EMPB2B ,"
+	cQuery += "   M0_CAIXA	 ,"
+	cQuery += "   M0_LICENSA ,"
+	cQuery += "   M0_CORPKEY ,"
+	cQuery += "   M0_CHKSUM ,"
+	cQuery += "   M0_DTVLD	 ,"
+	cQuery += "   M0_PSW	 ,"	
+	cQuery += "   M0_CTPSW	 ,"
+	cQuery += "   M0_INTCTRL ,"
+	cQuery += "   M0_PSWSTRT ,"
+	cQuery += "   M0_CNES	 ,"	
+	cQuery += "   M0_SIZEFIL ,"
+	cQuery += "   M0_LEIAUTE ,"
+	cQuery += "   M0_PICTURE ,"
+	cQuery += "   M0_STATUS "
+	cQuery += " FROM SYS_COMPANY" 
+	cQuery += " WHERE D_E_L_E_T_ = ''"
+	
+	cAliasQry := MPSysOpenQuery(ChangeQuery(cQuery))
+
+	While (cAliasQry)->(!Eof())
+		oItem	:= Nil 
+		oItem 	:= JsonObject():New()
+
+		oItem["M0_CODIGO"]	:= AllTrim((cAliasQry)->M0_CODIGO) 	// "01",
+		oItem["M0_CODFIL"]	:= AllTrim((cAliasQry)->M0_CODFIL) 	// "0101",
+		oItem["M0_NOME"]	:= AllTrim((cAliasQry)->M0_NOME) 	// "CAPTALYS CREDITO"",
+		oItem["M0_FILIAL"]	:= AllTrim((cAliasQry)->M0_FILIAL) 	// "COMPANHIA DE CREDITO",
+		oItem["M0_CGC"]		:= AllTrim((cAliasQry)->M0_CGC) 	// "23361030000129",
+		oItem["M0_TEL"]		:= AllTrim((cAliasQry)->M0_TEL)		// "(48) 3463-8600"		
+		oItem["M0_NOMECOM"]	:= AllTrim((cAliasQry)->M0_NOMECOM)
+		oItem["M0_FULNAME"]	:= AllTrim((cAliasQry)->M0_FULNAME)
+		oItem["M0_FAX	"]	:= AllTrim((cAliasQry)->M0_FAX	  )	
+		oItem["M0_EQUIP	"]	:= AllTrim((cAliasQry)->M0_EQUIP	)
+		oItem["M0_TPINSC"]	:= AllTrim((cAliasQry)->M0_TPINSC )
+		oItem["M0_CEI	"]	:= AllTrim((cAliasQry)->M0_CEI	  )	
+		oItem["M0_INSC"]	:= AllTrim((cAliasQry)->M0_INSC   )
+		oItem["M0_INSCM	"]	:= AllTrim((cAliasQry)->M0_INSCM	)
+		oItem["M0_ENDENT"]	:= AllTrim((cAliasQry)->M0_ENDENT )
+		oItem["M0_COMPENT"]	:= AllTrim((cAliasQry)->M0_COMPENT)
+		oItem["M0_BAIRENT"]	:= AllTrim((cAliasQry)->M0_BAIRENT)
+		oItem["M0_CIDENT"]	:= AllTrim((cAliasQry)->M0_CIDENT )
+		oItem["M0_ESTENT"]	:= AllTrim((cAliasQry)->M0_ESTENT )
+		oItem["M0_CEPENT"]	:= AllTrim((cAliasQry)->M0_CEPENT )
+		oItem["M0_CODMUN"]	:= AllTrim((cAliasQry)->M0_CODMUN )
+		oItem["M0_ENDCOB"]	:= AllTrim((cAliasQry)->M0_ENDCOB )
+		oItem["M0_COMPCOB"]	:= AllTrim((cAliasQry)->M0_COMPCOB)
+		oItem["M0_BAIRCOB"]	:= AllTrim((cAliasQry)->M0_BAIRCOB)
+		oItem["M0_CIDCOB"]	:= AllTrim((cAliasQry)->M0_CIDCOB )
+		oItem["M0_ESTCOB"]	:= AllTrim((cAliasQry)->M0_ESTCOB )
+		oItem["M0_CEPCOB"]	:= AllTrim((cAliasQry)->M0_CEPCOB )
+		oItem["M0_PRODRUR"]	:= AllTrim((cAliasQry)->M0_PRODRUR)
+		oItem["M0_FPAS	"]	:= AllTrim((cAliasQry)->M0_FPAS	  )	
+		oItem["M0_NATJUR"]	:= AllTrim((cAliasQry)->M0_NATJUR )
+		oItem["M0_DTBASE"]	:= AllTrim((cAliasQry)->M0_DTBASE )
+		oItem["M0_CNAE	"]	:= AllTrim((cAliasQry)->M0_CNAE	  )	
+		oItem["M0_ACTRAB"]	:= AllTrim((cAliasQry)->M0_ACTRAB )
+		oItem["M0_NUMPROP"]	:= AllTrim((cAliasQry)->M0_NUMPROP)
+		oItem["M0_MODEND"]	:= AllTrim((cAliasQry)->M0_MODEND )
+		oItem["M0_MODINSC"]	:= AllTrim((cAliasQry)->M0_MODINSC)
+		oItem["M0_CAUSA	"]	:= AllTrim((cAliasQry)->M0_CAUSA	)
+		oItem["M0_INSCANT"]	:= AllTrim((cAliasQry)->M0_INSCANT)
+		oItem["M0_TPESTAB"]	:= AllTrim((cAliasQry)->M0_TPESTAB)
+		oItem["M0_TEL_IMP"]	:= AllTrim((cAliasQry)->M0_TEL_IMP)
+		oItem["M0_FAX_IMP"]	:= AllTrim((cAliasQry)->M0_FAX_IMP)
+		oItem["M0_IMP_CON"]	:= AllTrim((cAliasQry)->M0_IMP_CON)
+		oItem["M0_TEL_PO"]	:= AllTrim((cAliasQry)->M0_TEL_PO )
+		oItem["M0_FAX_PO"]	:= AllTrim((cAliasQry)->M0_FAX_PO )
+		oItem["M0_CODZOSE"]	:= AllTrim((cAliasQry)->M0_CODZOSE)
+		oItem["M0_DESZOSE"]	:= AllTrim((cAliasQry)->M0_DESZOSE)
+		oItem["M0_COD_ATV"]	:= AllTrim((cAliasQry)->M0_COD_ATV)
+		oItem["M0_INS_SUF"]	:= AllTrim((cAliasQry)->M0_INS_SUF)
+		oItem["M0_NIRE	"]	:= AllTrim((cAliasQry)->M0_NIRE	  )	
+		oItem["M0_DTRE	"]	:= AllTrim((cAliasQry)->M0_DTRE	  )	
+		oItem["M0_DSCCNA"]	:= AllTrim((cAliasQry)->M0_DSCCNA )
+		oItem["M0_ASSPAT1"]	:= AllTrim((cAliasQry)->M0_ASSPAT1)
+		oItem["M0_ASSPAT2"]	:= AllTrim((cAliasQry)->M0_ASSPAT2)
+		oItem["M0_ASSPAT3"]	:= AllTrim((cAliasQry)->M0_ASSPAT3)
+		oItem["M0_RNTRC	"]	:= AllTrim((cAliasQry)->M0_RNTRC	)
+		oItem["M0_DTRNTRC"]	:= AllTrim((cAliasQry)->M0_DTRNTRC)
+		oItem["M0_SEQUENC"]	:= AllTrim((cAliasQry)->M0_SEQUENC)
+		oItem["M0_DOCSEQ"]	:= AllTrim((cAliasQry)->M0_DOCSEQ )
+		oItem["M0_EMERGEN"]	:= AllTrim((cAliasQry)->M0_EMERGEN)
+		oItem["M0_LIBMOD"]	:= AllTrim((cAliasQry)->M0_LIBMOD )
+		oItem["M0_DTAUTOR"]	:= AllTrim((cAliasQry)->M0_DTAUTOR)
+		oItem["M0_EMPB2B"]	:= AllTrim((cAliasQry)->M0_EMPB2B )
+		oItem["M0_CAIXA	"]	:= AllTrim((cAliasQry)->M0_CAIXA	)
+		oItem["M0_LICENSA"]	:= AllTrim((cAliasQry)->M0_LICENSA)
+		oItem["M0_CORPKEY"]	:= AllTrim((cAliasQry)->M0_CORPKEY)
+		oItem["M0_CHKSUM"]	:= AllTrim((cAliasQry)->M0_CHKSUM )
+		oItem["M0_DTVLD	"]	:= AllTrim((cAliasQry)->M0_DTVLD	)
+		oItem["M0_PSW	"]	:= AllTrim((cAliasQry)->M0_PSW	  )	
+		oItem["M0_CTPSW	"]	:= AllTrim((cAliasQry)->M0_CTPSW	)
+		oItem["M0_INTCTRL"]	:= AllTrim((cAliasQry)->M0_INTCTRL)
+		oItem["M0_PSWSTRT"]	:= AllTrim((cAliasQry)->M0_PSWSTRT)
+		oItem["M0_CNES	"]	:= AllTrim((cAliasQry)->M0_CNES	  )	
+		oItem["M0_SIZEFIL"]	:= AllTrim((cAliasQry)->M0_SIZEFIL)
+		oItem["M0_LEIAUTE"]	:= AllTrim((cAliasQry)->M0_LEIAUTE)
+		oItem["M0_PICTURE"]	:= AllTrim((cAliasQry)->M0_PICTURE)
+		oItem["M0_STATUS"]	:= AllTrim((cAliasQry)->M0_STATUS )
+		aAdd( oData["data"], oItem )
+	
+		(cAliasQry)->( DbSkip() )
+	
+	EndDo
+
+	cPostJson := EncodeUTF8(oData:ToJson())
+	
+	If cPostJson <> Nil
+		aRetorno := U_xKPTFWRest("POST",/*cUrl*/,/*cSetPath*/,cPostJson,/*aHeader*/,/*lCallBack*/,/*cOnergy*/)
+		If aRetorno[1]
+			U_xKPTLogMsg("Extração realizada com SUCESSO: "+aRetorno[3])
+
+			oRetorno := JsonObject():New()
+			cJson := oRetorno:FromJson(aRetorno[3])
+		
+			If ValType(cJson) == "U"
+				cIDNew := Alltrim(aRetorno[2])
+				lRet  := oRetorno["Status"]
+			Else
+				aRetorno[3] := "Falha ao popular JsonObject. Erro: " + cJson
+			EndIf
+		Else				
+			If Empty(aRetorno[2])
+				aRetorno[2] := "Falha na requisição."
+				U_xKPTLogMsg("Error: "+aRetorno[3])
+			EndIf
+
+			lRet	  := .F.
+			lErro     := .F.
+			cResponse := "Erro ao realizar a extração de: SYS_COMPANY ERROR: "+aRetorno[3]
+			cUrl      := aRetorno[4]
+		EndIf
+	Else 
+		U_xKPTLogMsg("ERROR NIL oData:ToJson : SYS_COMPANY")
+	EndIf
+		
+	lActiveLog 	:= SuperGetMv("KPT_MNTLOG",,.T.)
+
+	U_xKPTGrvLog(lActiveLog,cFilAnt,"SM001","KPTSM0",cIDNew,"PROTHEUS","TAXFY",cPostJson,Alltrim(aRetorno[3]),IIf(lRet,"2","3"),dDatabase,Substr(Time(),1,5))
+
+	(cAliasQry)->(DBCloseArea())
+
+FwRestArea(aArea)
+
+Return( lRet )
