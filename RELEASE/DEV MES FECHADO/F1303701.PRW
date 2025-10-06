@@ -152,7 +152,7 @@ User Function F1303701(aCabNota, cData, cNovIdInt, nRecLog, cEmpLog, cFilLog, cD
 			U_F1304201(aItens, cNovIdInt, dData, nSF1Recno, cDocNum)
 			BreakTran()
 			//Conout("F1303701 - Movimento interno para baixar saldo com sucesso." + FwTimeStamp(2))
-
+ 
 			//EF_043 - Inclui Novo Pedido de Compra
 			U_F1304301(aItens, cNovIdInt, dData)
 			BreakTran()
@@ -415,7 +415,7 @@ User Function F1303702(aCabNota, nRecLog, cEmpLog, cFilLog, cDocNum)
 
 	//Se o nHandle for diferente de nulo significa que foi preenchido e o arquivo deverá ser fechado
 	If nHandle <> Nil
-		FClose(nHandle)
+		FClose(nHandle) 
 		U_F1303802(2)
 	EndIf
 

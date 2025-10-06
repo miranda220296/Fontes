@@ -93,10 +93,10 @@ User Function F1304201(aItens, cNovIdInt, dData, nSF1Recno, cDocNum)
 				EndIf
 
 				If lOk
-				/*/	_aCab1 := {{"D3_DOC" ,cDocNum, NIL},;
+					_aCab1 := {{"D3_DOC" ,cDocNum, NIL},;
 					{"D3_TM" ,cTipoMov , NIL},;
-						{"D3_CC" ,aItens[nItem][4], NIL},;
-						{"D3_EMISSAO" ,dData, NIL}}
+					{"D3_CC" ,aItens[nItem][4], NIL},;
+					{"D3_EMISSAO" ,dData, NIL}}
 
 
 
@@ -120,8 +120,6 @@ User Function F1304201(aItens, cNovIdInt, dData, nSF1Recno, cDocNum)
 					AAdd(aMovimento, {"D3_XFORN",   SF1->F1_FORNECE,    Nil})
 					AAdd(aMovimento, {"D3_XLJFOR",  SF1->F1_LOJA,       Nil})
 
-
-
 					//MsExecAuto({| movimentacao, operacao| MATA240(movimentacao, operacao)}, aMovimento, 3)
 					aadd(_atotitem,aMovimento)
 
@@ -143,34 +141,6 @@ User Function F1304201(aItens, cNovIdInt, dData, nSF1Recno, cDocNum)
 						SD3->D3_TEATF := SF5->F5_TEATF
 						SD3->(MsUnLock())
 					EndIf
-					/*/
-					 DbSelectArea("SD3")
-					Reclock("SD3",.T.)
-					SD3->D3_FILIAL := CFILANT
-					SD3->D3_XCONTA := SF5->F5_XCONTA
-					SD3->D3_TEATF := SF5->F5_TEATF
-					SD3->D3_DOC := cDocNum
-					SD3->D3_TM  := cTipoMov
-					SD3->D3_CC  := aItens[nItem][4]
-					SD3->D3_EMISSAO := dData
-					SD3->D3_TM      := cTipoMov
-					SD3->D3_COD     := aItens[nItem][1]
-					SD3->D3_QUANT   := aItens[nItem][2]
-					SD3->D3_LOCAL   := aItens[nItem][3]
-					SD3->D3_EMISSAO := dData
-					If !(Empty(cDocNum))
-						SD3->D3_DOC     := cDocNum
-					EndIf
-					If !lCustoZero
-						SD3->D3_CC      := aItens[nItem][4]
-						SD3->D3_CUSTO1  := aItens[nItem][6]
-					EndIf
-					SD3->D3_XIDEXNF  := cNovIdInt
-					SD3->D3_XNOTA    := SF1->F1_DOC
-					SD3->D3_XSERIE   := SF1->F1_SERIE
-					SD3->D3_XFORN    := SF1->F1_FORNECE
-					SD3->D3_XLJFOR   := SF1->F1_LOJA
-					SD3->(MsUnLock())
 				Else
 					Exit
 				EndIf

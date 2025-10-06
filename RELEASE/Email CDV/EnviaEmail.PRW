@@ -15,7 +15,7 @@
 ±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
 ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */    
-
+ 
 User Function EnviaEmail(aDestinatarios, cSubject, mMsg) 
 //Parametros da funcao: Array de Destinatarios, Subject do e-mail e a Mensagem a ser enviada
 Local _MailServer

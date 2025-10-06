@@ -64,6 +64,17 @@ User Function CNTA121()
 	Private cNumCr 	:= ""
 	Private cFilCR 	:= ""
 
+
+/*/
+	//NÃO MEXER
+	If Type("__XGTTES") == "C" .And. aParam[2] == "FORMLINEPOS"
+		If !Empty(__XGTTES)
+			If cFilAnt <> __XGTTES
+				cFilAnt := __XGTTES
+			EndIf
+		EndIf
+	EndIf
+/*/
 	If aParam <> NIL
 		oModel  	:= aParam[1]
 		cIdPonto	:= aParam[2]
@@ -77,11 +88,20 @@ User Function CNTA121()
 		//	U_F1200401() // Rotina a ser executado por ultimo e ela não tem efeito de validação e sim de preparação
 		//elseif cIdPonto == 'CN121PED'
 		//	xRet := U_F1200718()//Ponto de entrada para tratamento de campos do pedido de compra
+
 		If (cIdPonto == "MODELPOS") .AND. cIdModel == "CNTA121" .AND. oModel:GetOperation() == 3
 			oModelCXN   := oModel:GetModel():GetModel("CXNDETAIL")//Obtêm o modelo da CNX, com ele é possível verificar valores da CNX
 			oModelCNE   := oModel:GetModel():GetModel("CNEDETAIL")
 			nXMulta := oModelCNE:GetValue("CNE_XMULTA")
 			nXJuros := oModelCNE:GetValue("CNE_XJUROS")
+
+			If Type("__XGTTES") == "C"
+				If !Empty(__XGTTES)
+					If cFilAnt <> __XGTTES
+						cFilAnt := __XGTTES
+					EndIf
+				EndIf
+			EndIf
 
 			DbSelectArea("P35")
 			DbSetOrder(1)
@@ -663,10 +683,23 @@ User Function xGctGatTes(cCodProd,lTE)
 	Local cCpoTES		:= SUBSTR(cTabTES, -2, 2)
 	Local cTes			:= ""
 
+	Public __XGTTES := ""
+
+	DbSelectArea("CN9")
+	CN9->(DbSetOrder(1))
+
+	If CN9->(DbSeek(FwFldGet("CND_FILCTR")+FwFldGet("CND_CONTRA")+FwFldGet("CND_REVISA")))
+		If CN9->CN9_TPCTO == "003"
+			Return Posicione(cTabTES,1,xFilial(cTabTES)+cCodProd,cCpoTES+'_TE')
+		EndIf
+	EndIf
+
+	__XGTTES := cFilant
+	cFilAnt := FwFldGet("CND_FILCTR")
+
+
 
 	Default cCodProd	:= ""
 
 	cTes := Posicione(cTabTES,1,xFilial(cTabTES)+cCodProd,cCpoTES+'_TE')
-	fwfldput("CNE_TE",cTes)
-
 Return cTes

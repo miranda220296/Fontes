@@ -20,6 +20,7 @@ User Function F1304301(aItens, cNovIdInt, dData)
     Local aItensPed     := {}
     Local aLog          := {}
     Local aPedido       := {}
+    Local aItSC         := {}
 
     Local cCompGener    := ""
     Local cErro         := ""
@@ -33,8 +34,10 @@ User Function F1304301(aItens, cNovIdInt, dData)
     Local nQtdLinha     := 0
     Local nTipo         := 0
     Local nZ            := 0
+    Local nX := 1
     Local cPedSC7       := ""
     Local cCodUser      :=RetCodUsr()
+    Local aNumSC        := {}
     Local aValfre       := {}
     Private lMsErroAuto     := .F.
 
@@ -63,6 +66,7 @@ User Function F1304301(aItens, cNovIdInt, dData)
     For nItem := 1 To nQtdLinha
         If SC7->(DbSeek(FwXFilial("SC7") + aItens[nItem][7] + aItens[nItem][8]))
             If nItem == 1
+                
                 nTipo := SC7->C7_TIPO
                 AAdd(aPedido, {"C7_FORNECE",    SC7->C7_FORNECE,    Nil})
                 AAdd(aPedido, {"C7_LOJA",       SC7->C7_LOJA,       Nil})
@@ -90,8 +94,8 @@ User Function F1304301(aItens, cNovIdInt, dData)
           //AAdd(aItemPed, {"C7_RESIDUO",   SC7->C7_RESIDUO,                        Nil}) Thais Paiva - 10694451
 		    AAdd(aItemPed, {"C7_RESIDUO",   "",                        				Nil})
             AAdd(aItemPed, {"C7_UM",        SC7->C7_UM,                             Nil})
-            AAdd(aItemPed, {"C7_NUMSC",     SC7->C7_NUMSC,                          Nil})
-            AAdd(aItemPed, {"C7_ITEMSC",    SC7->C7_ITEMSC,                         Nil})
+            //AAdd(aItemPed, {"C7_NUMSC",     SC7->C7_NUMSC,                          Nil})
+            //AAdd(aItemPed, {"C7_ITEMSC",    SC7->C7_ITEMSC,                         Nil})
             AAdd(aItemPed, {"C7_LOCAL",     SC7->C7_LOCAL,                          Nil})
             AAdd(aItemPed, {"C7_OBS",       SC7->C7_OBS,                            Nil})
             AAdd(aItemPed, {"C7_DATPRF",    dData,                                  Nil})
@@ -103,7 +107,8 @@ User Function F1304301(aItens, cNovIdInt, dData)
 			AAdd(aItemPed, {"C7_VLDESC",    SC7->C7_VLDESC,                         Nil}) //Thais Paiva - 10694451
 			AAdd(aItemPed, {"C7_XDESFIN",   SC7->C7_XDESFIN,                        Nil}) //Thais Paiva - 10694451			
 			AADD(aValfre, {SC7->C7_VALFRE, SC7->C7_PRODUTO})
-
+            AADD(aItSC,SC7->C7_ITEMSC)
+            AADD(aSCNUM,SC7->C7_NUMSC)
 			/// AJUSTE PARA AGLUTINAR OS MESMOS PRODUTOS EM UM ITEM APENAS NO PEDIDO [VALIDAÇÃO NÃO PERMITE ITENS REPETIDOS NUM MESMO PEDIDO]
 			nAchou := 0
 			nZ     := 0
@@ -140,7 +145,10 @@ User Function F1304301(aItens, cNovIdInt, dData)
 				SC7->(Reclock("SC7",.F.))
 				SC7->C7_USER := ""
                 SC7->C7_VALFRE := aValFre[aScan(aValFre,{|x| x[2]== SC7->C7_PRODUTO}),1]
+                SC7->C7_NUMSC := aSCNUM[nX]
+                SC7->C7_ITEMSC := aItSC[nX]
 				SC7->(MsUnlock())
+                nX++
 				SC7->(DBSkip())
 			Enddo
 		Endif    
