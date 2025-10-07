@@ -113,7 +113,7 @@ User Function MSCHKCOND(cCond,cForn,cLoja,lIntegNf,aDatasInt,lContrat,dDataKT,dE
 					EndIf
 				Else
 					oMain := oModel:GetModel("MODEL_SC7p")
-					If oMain:GetValue("C7_XDTEXCE") == "Sim"
+					If AllTrim(oMain:GetValue("C7_XDTEXCE")) == "Sim" .Or. AllTrim(oMain:GetValue("C7_XDTEXCE")) == "1" 
 						Return aRet
 					EndIf
 				EndIf
