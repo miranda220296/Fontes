@@ -36,7 +36,7 @@ User Function F240BORD()
 		(cAliasTRB)->(DBCloseArea())
 	EndIf
 	DBUseArea(.T., "TOPCONN", TCGenQry( , , cSQL), (cAliasTRB), .F., .T.)
-
+ 
     Count To nCount
 
 	(cAliasTRB)->(DBSelectArea(cAliasTRB))
