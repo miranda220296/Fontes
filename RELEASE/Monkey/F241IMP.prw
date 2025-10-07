@@ -31,6 +31,8 @@ User Function F241IMP()
 	Local nCount        := 0
 	Local nReg          := 0
 
+	Public __lF241SL3   := .F.
+
 
 	cSQL := " SELECT E2_PREFIXO, E2_NUM, E2_PARCELA, E2_TIPO, E2_FORNECE, E2_LOJA, E2_VALOR, E2_PIS, E2_COFINS, E2_CSLL, E2_FATPREF, E2_FATURA, E2_FATFOR, E2_FATLOJ, E2_TIPOFAT, E2_BASEPIS, E2_BASECOF, E2_BASECSL, SE2.R_E_C_N_O_ NUMREG " + cEOL
 	CSQL += "   FROM " + RetSQLName("SE2") + " SE2 " + cEOL
@@ -72,6 +74,12 @@ User Function F241IMP()
 		(cAliasTRB)->(DBCloseArea())
 	EndIf
 
+	If !__lF241SL3
+		Reclock("SE2",.F.)
+	//	SE2->E2_SALDO := SE2->E2_SALDO - (nPis+nCofins+nCsll)
+		SE2->(MsUnLock())
+		__lF241SL3 := .T.
+	EndIf
 	RestArea(aAreaSE2)
 
 	// Posiciono no título de origem para que a geração seja pelo título de origem e não pela fatura

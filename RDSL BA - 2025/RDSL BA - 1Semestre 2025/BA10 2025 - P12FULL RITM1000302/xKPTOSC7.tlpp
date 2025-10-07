@@ -28,25 +28,25 @@ User Function xKPTOSC7(cParm01,cParm02,oGrid,lLogado,oSay,lGeral,lUnico)
 			aParam := {cParm01[1], cParm01[2]}
 		Endif
 
-	//	RPCSetType(3)
-	//	If RpcSetEnv(aParam[1], aParam[2])
+		RPCSetType(3)
+		If RpcSetEnv(aParam[1], aParam[2])
 			U_xKPTLogMsg("VIA JOB RPCSetEnv Iniciado Emp: "+aParam[1]+" Fil: "+aParam[2])
 			cEmpAnt := aParam[1]
 			cFilAnt := aParam[2]
 
 			BatchProcess(cCadastro, cCadastro, "xKPTOSC7", {|| xFilterSC7(oGrid,lLogado,oSay,cFilAnt,lUnico)}, {|| .F. })
-	//	Else
-	//		U_xKPTLogMsg("Não foi possivel conectar no ambiente VIA JOB RPCSetEnv - xKPTOSC7.prw")
-	//	Endif
+		Else
+			U_xKPTLogMsg("Não foi possivel conectar no ambiente VIA JOB RPCSetEnv - xKPTOSC7.prw")
+		Endif
 	Else
 		xFilterSC7(oGrid,lLogado,oSay,,lUnico)
 	EndIf
 
 	U_xKPTLogMsg("FIM INTEGRAÇÃO TaxFy - xKPTOSC7.prw")
 
-	//If !lLogado
-	//	RpcClearEnv()
-	//EndIf
+	If !lLogado
+		RpcClearEnv()
+	EndIf
 Return
 
 Static Function xFilterSC7(oGrid,lLogado,oSay,xFilial,lUnico)
@@ -220,25 +220,3 @@ Static Function xFilterSC7(oGrid,lLogado,oSay,xFilial,lUnico)
 
 	EndIf
 Return lRet
-
-//-------------------------------------------------------------------
-/*/{Protheus.doc} Scheddef
-    Função para definição de parametros na tela de schedule
-@author Lucas Miranda de Aguiar
-@since 29/01/2025
-//-----------------------------------------------------------------*/
-Static Function Scheddef()
-    Local aParam as array
-    Local aOrd as array
- 
-    aParam := {}
-
- 
-    Aadd(aParam, "P"            ) // 01 - Tipo R para relatorio P para processo
-    Aadd(aParam, ""       ) // 02 - Pergunte do relatorio, caso nao use passar ParamDef
-    Aadd(aParam, ""          ) // 03 - Alias
-    Aadd(aParam, aOrd           ) // 04 - Array de ordens
-    Aadd(aParam, "" ) // 05 - Titulo
- 
-Return aParam
-

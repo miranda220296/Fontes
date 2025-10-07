@@ -75,4 +75,3 @@ User Function F240BORD()
 	RestArea(aArea)
 
 Return
-Return
