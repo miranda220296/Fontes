@@ -21,7 +21,7 @@ Rotina utilizada dentro do método UpSertDocDev para inclusão de nota fiscal de e
 @return     cResposta, caso esteja em branco nenhum erro ocorreu
 /*///aCabNota, cData, cNovIdInt, nRecLog, cEmpLog, cFilLog)
 User Function F1303701(aCabNota, cData, cNovIdInt, nRecLog, cEmpLog, cFilLog, cDocNum)
-
+ 
 	Local aArea         := {}
 	Local aItens        := {}
 

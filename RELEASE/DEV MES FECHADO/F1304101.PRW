@@ -6,7 +6,7 @@
 // --------------------------------------------------------
 // @project MAN0000007423048_EF_041
 // @@type   User Function
-// @author  Rafael Riego
+// @author  Rafael Riego 
 // @since   10/05/2018
 // @version 12.1.7
 // @param   aItens, array, itens da nota fiscal de entrada

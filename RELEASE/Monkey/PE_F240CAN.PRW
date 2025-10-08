@@ -23,6 +23,7 @@ User Function F240CAN()
     Local cEOL          := Chr(13) + Chr(10)
     Local cAliasTRB     := GetNextAlias()
     Local nCount        := 0
+	Local nSldTX        := 0
 	Local lMonkey 		:= .F.
 	Local cMKPref    	:= SuperGetMV("MK_PREFIXO", , "NEG")
 	Local cFornPCC 		:= SuperGetMV("MK_FORNPCC", , "UNIAO ")
@@ -72,10 +73,15 @@ User Function F240CAN()
 		SE2->(DBSelectArea("SE2"))
 		SE2->(DBSetOrder(1))
 		SE2->(DBGoTo((cAliasTRB)->NUMREG))
+		nSldTX := SE2->E2_SALDO
 		RecLock("SE2", .F.)
 			SE2->(DBDelete())
 			ConOut("Título TX excluído! - Recno: " + CValToChar((cAliasTRB)->NUMREG))
 		SE2->(MSUnLock())
+
+		SE2->(DbSeek(SEA->(EA_FILIAL+EA_PREFIXO+EA_NUM+EA_PARCELA+EA_TIPO+EA_FORNECE+EA_LOJA)))
+		Reclock("SE2",.F.)
+		SE2->E2_SALDO := SE2->E2_SALDO + nSldTX 
 
 		SE5->(DBSelectArea("SE5"))
 		SE5->(DBSetOrder(7)) 

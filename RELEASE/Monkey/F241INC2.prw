@@ -26,7 +26,7 @@ User Function F241INC2()
 
     Local cObs := "(MNK) "
     
-    
+     
     If SE2->E2_SALDO < 0
         
         RecLock("SE2", .F.)
