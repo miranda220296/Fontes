@@ -72,17 +72,17 @@ User Function F241IMP()
 		(cAliasTRB)->(DBSkip())
 
 	EndDo
-
+ 
 	If Select(cAliasTRB) > 0
 		(cAliasTRB)->(DBCloseArea())
 	EndIf
 
-	If !__lF241SL3
+	//If !__lF241SL3
 		Reclock("SE2",.F.)
 			SE2->E2_SALDO := SE2->E2_SALDO - (nPis+nCofins+nCsll)
 		SE2->(MsUnLock())
-		__lF241SL3 := .T.
-	EndIf
+	//	__lF241SL3 := .T.
+	//EndIf
 	RestArea(aAreaSE2)
 
 	// Posiciono no título de origem para que a geração seja pelo título de origem e não pela fatura
