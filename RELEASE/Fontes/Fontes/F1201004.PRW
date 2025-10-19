@@ -57,7 +57,7 @@ User Function F1201004(cFilSCR,cPedido,cTipDoc)
 		cRevCrt := SubStr( SCR->CR_NUM, 16, TamSX3("CNA_REVISA")[1] )
 		If CNA->(DbSeek(cFilSCR+cNumCtr+cRevCrt))
 			cNome := GetAdvFVal("SA2","A2_NOME",xFilial("SA2")+CNA->CNA_FORNECE+CNA->CNA_LJFORN,1,"Fornecedor nao cadastrado")
-			cFornec := CNA->CNA_FORNECE 
+			cFornec := CNA->CNA_FORNECE
 			cLoja   := CNA->CNA_LJFORN
 		Else
 			cNome := "Fornecedor nao cadastrado"
@@ -69,7 +69,9 @@ User Function F1201004(cFilSCR,cPedido,cTipDoc)
 	RecLock("SCR", .F.)
 	SCR->CR_XFORNEC := cFornec
 	SCR->CR_XLOJA   := cLoja
-	SCR->CR_XNOMFOR := cNome 
+	If !Empty(cNome)
+		SCR->CR_XNOMFOR := cNome
+	EndIf
 	SCR->CR_XCOMSOL := UsrFullName(cUser)
 	SCR->CR_XDOC    := cDocNf
 	SCR->CR_XDESCTP := cDescTp
@@ -114,7 +116,7 @@ Static Function fVeriRep(cFilSCR,cPedido,cTipDoc)
 			EndIf
 		EndIf
 	EndIf
-	
+
 Return cRet
 
 /*

@@ -4,10 +4,10 @@
 #iNCLUDE "FWMVCDEF.ch"
 #include "topconn.ch"
 #INCLUDE "TBICONN.CH"
-#INCLUDE "FINA050.CH"
+
 
 User Function FCADP51()
- 
+
 	Local oBrowse := FWmBrowse():New()
 
 	Private cNomeLog  := "Log de integrações Plannexo"

@@ -74,7 +74,7 @@ User Function F240CAN()
 		SE2->(DBSetOrder(1))
 		SE2->(DBGoTo((cAliasTRB)->NUMREG))
 		nSldTX := SE2->E2_SALDO
-		RecLock("SE2", .F.)
+		RecLock("SE2", .F.) 
 			SE2->(DBDelete())
 			ConOut("Título TX excluído! - Recno: " + CValToChar((cAliasTRB)->NUMREG))
 		SE2->(MSUnLock())
