@@ -95,13 +95,13 @@ User Function CNTA121()
 			nXMulta := oModelCNE:GetValue("CNE_XMULTA")
 			nXJuros := oModelCNE:GetValue("CNE_XJUROS")
 
-			If Type("__XGTTES") == "C"
+		/*/	If Type("__XGTTES") == "C"
 				If !Empty(__XGTTES)
 					If cFilAnt <> __XGTTES
 						cFilAnt := __XGTTES
 					EndIf
 				EndIf
-			EndIf
+			EndIf/*/
 
 			DbSelectArea("P35")
 			DbSetOrder(1)

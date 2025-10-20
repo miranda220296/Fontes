@@ -5,7 +5,7 @@
 #INCLUDE "FWMVCDEF.CH"
 #INCLUDE "GCTXDEF.CH"
 #INCLUDE "CNTA121.CH"
-//#INCLUDE "CNTA120.CH"
+#INCLUDE "CNTA120.CH"
 #INCLUDE "PROTHEUS.CH"
 #INCLUDE "ApWizard.ch"
 #INCLUDE "FWMVCDEF.CH"
@@ -44,6 +44,7 @@ User Function F1200709(aAllCab,aItsGCT,aId,cContrat,cRevisa, cNewfil )
 	Local cCodCTR   := "CNTA121EXEMP002"
 	Local aMsgDeErro:= {}
 	Local lRet      := .F.
+	Local cCondPg   := ""
 // --------------------------------------------------------
 // [ Chamado 7023201 - inicio - 1/3 ]
 // --------------------------------------------------------
@@ -74,6 +75,7 @@ User Function F1200709(aAllCab,aItsGCT,aId,cContrat,cRevisa, cNewfil )
 
 		cFilOld := cFilAnt
 		cFilAnt := cNewfil
+		cCondPg := CN9->CN9_CONDPG
 
 		Begin Transaction
 			CND->(DbSetOrder(04))
@@ -147,6 +149,7 @@ User Function F1200709(aAllCab,aItsGCT,aId,cContrat,cRevisa, cNewfil )
 					oModel:SetValue("CNDMASTER","CND_LJFORN",aallcab[1][AScan(aallcab[1], {|X| AllTrim(x[1]) == "CND_LJFORN"})][2])
 					oModel:SetValue("CNDMASTER","CND_FILIAL",aallcab[1][AScan(aallcab[1], {|X| AllTrim(x[1]) == "CND_FILIAL"})][2])
 					oModel:SetValue("CNDMASTER","CND_PARCEL",aallcab[1][AScan(aallcab[1], {|X| AllTrim(x[1]) == "CND_PARCEL"})][2])
+					oModel:SetValue("CNDMASTER","CND_CONDPG",cCondPg)
 					//oModel:SetValue("CNDMASTER","CND_RCCOMP"    ,"1")//Selecionar competência
 
 
@@ -483,14 +486,14 @@ Static Function XCN120VlCo(nTipo,lExcede,cFilCTR)
 				cCompExce := Substr(DToS(CN9->CN9_DTINIC),1,6)
 
 				cQuery := "SELECT DISTINCT(CNF.CNF_COMPET) AS CNF_COMPET FROM " +RetSQLName("CNF") +" CNF WHERE "
-				cQuery += "CNF.D_E_L_E_T_ = '' AND CNF.CNF_FILIAL = '" +xFilial("CNF",cFilCTR) +"' AND " //Thiago Marques - 23781643 - 12/06/2025 - Alterado de <> para = na verificação dos registros deletador
+				cQuery += "CNF.D_E_L_E_T_ <> '*' AND CNF.CNF_FILIAL = '" +xFilial("CNF",cFilCTR) +"' AND "
 				cQuery += "CNF.CNF_CONTRA = '" +cContra +"' AND CNF.CNF_REVISA = '" +cRevisa +"' "
 				cQuery += "UNION "
-				cQuery += "SELECT DISTINCT(CND.CND_COMPET) FROM " +RetSQLName("CND") +" CND WHERE CND.D_E_L_E_T_ = '' AND "
+				cQuery += "SELECT DISTINCT(CND.CND_COMPET) FROM " +RetSQLName("CND") +" CND WHERE CND.D_E_L_E_T_ <> '*' AND "
 				cQuery += "CND.CND_FILCTR = '" + xFilial("CNF",cFilCTR) +"' AND "
 				cQuery += "CND.CND_CONTRA = '" +cContra +"' AND "
 				cQuery += "CND.CND_REVISA = '" +cRevisa +"' AND CND.CND_COMPET NOT IN ("
-				cQuery += "SELECT DISTINCT(CNFTMP.CNF_COMPET) FROM " +RetSQLName("CNF") +" CNFTMP WHERE CNFTMP.D_E_L_E_T_ = '' AND "
+				cQuery += "SELECT DISTINCT(CNFTMP.CNF_COMPET) FROM " +RetSQLName("CNF") +" CNFTMP WHERE CNFTMP.D_E_L_E_T_ <> '*' AND "
 				cQuery += "CNFTMP.CNF_FILIAL = '" +xFilial("CNF",cFilCTR) +"' AND CNFTMP.CNF_CONTRA = '" +cContra +"' AND "
 				cQuery += "CNFTMP.CNF_REVISA = '" +cRevisa +"'"
 				cQuery += ")"

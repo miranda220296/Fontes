@@ -464,7 +464,7 @@ User Function RDDV002(cTipo,cMotivo)
 	DbSelectArea("PZZ")
 	DbSetOrder(1)
 	If !DbSeek(xFilial("PZZ")+cTipo+cMotivo)
-		If l110Auto //Inicio Thais Paiva 9474856
+		If l110Auto .AND. !IsInCallStack("U_AMS00015") //Inicio Thais Paiva 9474856
 			aadd(_aMsgErr,"Nao e permitido utilizar motivo que nao esteja amarrado ao tipo!")
 		Else //Fim Thais Paiva 9474856
 			Alert("Nao e permitido utilizar motivo que nao esteja amarrado ao tipo!")
