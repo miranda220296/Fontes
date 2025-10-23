@@ -85,7 +85,7 @@ User Function CNTA121()
         através da função CN121MedEnc, pra isso utilizamos a função FwIsInCallStack
          */
 		//If cIdPonto == 'CN121ATS'
-		//	U_F1200401() // Rotina a ser executado por ultimo e ela não tem efeito de validação e sim de preparação
+		//	U_() // Rotina a ser executado por ultimo e ela não tem efeito de validação e sim de preparação
 		//elseif cIdPonto == 'CN121PED'
 		//	xRet := U_F1200718()//Ponto de entrada para tratamento de campos do pedido de compra
 

@@ -177,7 +177,8 @@ User Function F1200701(lExibeTela, lVerUsrLog, lVerCtr, mv_par01, mv_par02, mv_p
 
 	//cQuery += " AND SC1.C1_FILIAL = '01310011' AND SC1.C1_NUM = '002338' "
 
-
+	cQuery += " AND SC1.C1_FILIAL = '01AJ0001' "
+	cQuery += " AND SC1.C1_EMISSAO > '20251001'"
 	cQuery += "ORDER BY "  + SqlOrder(SC1->(IndexKey()))
 
 	cChave		:= SC1->(IndexKey())
