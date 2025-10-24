@@ -95,13 +95,14 @@ User Function CNTA121()
 			nXMulta := oModelCNE:GetValue("CNE_XMULTA")
 			nXJuros := oModelCNE:GetValue("CNE_XJUROS")
 
-		/*/	If Type("__XGTTES") == "C"
+
+			If Type("__XGTTES") == "C" .And. !IsInCallStack("U_F1200709")
 				If !Empty(__XGTTES)
 					If cFilAnt <> __XGTTES
 						cFilAnt := __XGTTES
 					EndIf
 				EndIf
-			EndIf/*/
+			EndIf
 
 			DbSelectArea("P35")
 			DbSetOrder(1)
@@ -694,9 +695,10 @@ User Function xGctGatTes(cCodProd,lTE)
 		EndIf
 	EndIf
 
-	__XGTTES := cFilant
-	cFilAnt := FwFldGet("CND_FILCTR")
-
+	If !IsInCallStack("U_F1200709")
+		__XGTTES := cFilant
+		cFilAnt := FwFldGet("CND_FILCTR")
+	Endif
 
 
 	Default cCodProd	:= ""
