@@ -708,10 +708,10 @@ Static Function CarArrayNf(oCabec,oCorpo,aCabec,aItens,cRet,cXID,oParcela)
 		DbSelectArea("SC7")
 		SC7->(DBSETORDER(1))
 		SC7->(DBSEEK(cFilAnt+oCorpo[nX]:cPedido+oCorpo[nX]:cItemPC))
-
-		If SC7->C7_QTDACLA < (SC7->C7_QUANT - SC7->C7_QUJE)
+ 
+		If SC7->C7_QTDACLA > 0
 			Reclock("SC7",.F.)
-			SC7->C7_QTDACLA := (SC7->C7_QUANT - SC7->C7_QUJE)
+			SC7->C7_QTDACLA := 0
 			SC7->(MSUNLOCK())
 		EndIf
 

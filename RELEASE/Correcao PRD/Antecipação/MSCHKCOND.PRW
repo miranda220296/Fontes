@@ -8,7 +8,7 @@ Função responsável por validar as condições de pagamento de acordo com o pa
 @version	P12.2210
 */ 
 
-User Function MSCHKCOND(cCond,cForn,cLoja,lIntegNf,aDatasInt,lContrat,dDataKT,dEmissKt,oModel)
+User Function MSCHKCOND(cCond,cForn,cLoja,lIntegNf,aDatasInt,lContrat,dDataKT,dEmissKt,oModel,dDtEmiSP)
 
 	Local nDtProc := 0
 	Local aRet := {.T.,"OK",.F.}
@@ -39,6 +39,7 @@ User Function MSCHKCOND(cCond,cForn,cLoja,lIntegNf,aDatasInt,lContrat,dDataKT,dE
 	Default dDataKt := ""
 	Default dEmissKt := ""
 	Default oModel := NIL
+	Default dDtEmiSP := Date()
 
 	If !GetNewPar("MS_VALCOND",.T.)
 		Return {.T.,"OK"}//Chave para ativar ou desativar a validação da condição de pgto.
@@ -104,19 +105,24 @@ User Function MSCHKCOND(cCond,cForn,cLoja,lIntegNf,aDatasInt,lContrat,dDataKT,dE
 		EndIf
 	Else
 		If (lDatafixa .And. lValDtFix) .Or. (!lDatafixa .And. lValCommon)
-			aDatasCommon := Condicao(100, cCond , , Date() , , , , )
 
-				If IsInCallStack("U_F0100401") .Or. IsInCallStack("U_S0100401")
+
+			If IsInCallStack("U_F0100401") .Or. IsInCallStack("U_S0100401")
+				aDatasCommon := Condicao(100, cCond , , dDtEmiSP , , , , )
 				If Valtype(oModel) == "C"
 					If AllTrim(oModel) == "1" .Or. AllTrim(oModel) == "Sim"
 						Return aRet
 					EndIf
 				Else
 					oMain := oModel:GetModel("MODEL_SC7p")
-					If AllTrim(oMain:GetValue("C7_XDTEXCE")) == "Sim" .Or. AllTrim(oMain:GetValue("C7_XDTEXCE")) == "1" 
+					If AllTrim(oMain:GetValue("C7_XDTEXCE")) == "Sim" .Or. AllTrim(oMain:GetValue("C7_XDTEXCE")) == "1"
 						Return aRet
 					EndIf
+
+
 				EndIf
+			Else
+				aDatasCommon := Condicao(100, cCond , , Date() , , , , )
 			EndIf
 			For nX := 01 To Len(aDatasCommon)
 				If nX == 01 .And. !Empty(dDataKT)//Tratativa SP KT
@@ -164,7 +170,7 @@ User Function MSCHKCOND(cCond,cForn,cLoja,lIntegNf,aDatasInt,lContrat,dDataKT,dE
 			Next nX
 		EndIf
 	EndIf
-	
+
 	If IsInCallStack("U_F1200902")
 		If Len(aRet) <> 3
 			aRet[3] := .F.
@@ -172,3 +178,21 @@ User Function MSCHKCOND(cCond,cForn,cLoja,lIntegNf,aDatasInt,lContrat,dDataKT,dE
 	EndIf
 
 Return aRet
+
+
+User Function MSCHKKD()
+
+
+
+	Local aRet := {}
+	Local lRet := .T.
+
+	aRet := U_MSCHKCOND(M->C7_COND,M->C7_FORNECE,M->C7_LOJA,,,,,,M->C7_XDTEXCE,M->C7_XDTEMI)
+
+
+	If !aRet[1]
+		Help("", 1, "F0100401", , aRet[2], 1, 0, , , , , , {"Revise a condi��o de pagamento escolhida."})
+		lRet := .F.
+	EndIf
+
+Return lRet
