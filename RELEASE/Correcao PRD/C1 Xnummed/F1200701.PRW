@@ -4,7 +4,7 @@
 #INCLUDE "TOPCONN.CH"
 #INCLUDE "Tbiconn.CH"
 #Include "TOTVS.ch"
-/*/{Protheus.doc} F1200701
+/*/{Protheus.doc} F1200701 
 	
 	Seleção de itens de solicitação de compra para medição automatizada.
 	
