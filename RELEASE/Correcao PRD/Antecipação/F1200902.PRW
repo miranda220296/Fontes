@@ -36,7 +36,7 @@ User Function F1200902()
 		cMyCod := aCols[01,nPosCODPro]
 
 
-		nX := N
+		nX := N 
 		If !aCols[n,nPosDelete]	//-Linha Deletada?
 
 			If !( lRet := U_F0900103( GDFieldGet ( "C7_PRODUTO" ,N,.F.,,) ))
