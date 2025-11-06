@@ -78,9 +78,17 @@ User Function F241IMP()
 	EndIf
 
 	//If !__lF241SL3
+<<<<<<< HEAD
 		Reclock("SE2",.F.)
 			SE2->E2_SALDO := SE2->E2_SALDO - (nPis+nCofins+nCsll)
 		SE2->(MsUnLock())
+=======
+	If SE2->E2_PREFIXO == "NEG" .And. SE2->E2_TIPO == "FT"
+		Reclock("SE2",.F.)
+			SE2->E2_SALDO := SE2->E2_SALDO - (nPis+nCofins+nCsll)
+		SE2->(MsUnLock())
+	EndIf
+>>>>>>> c19d0ad3bb4842dac756dc7e91a7dd8ebd441b88
 	//	__lF241SL3 := .T.
 	//EndIf
 	RestArea(aAreaSE2)

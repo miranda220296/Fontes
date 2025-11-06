@@ -35,7 +35,7 @@ User Function F1200701(lExibeTela, lVerUsrLog, lVerCtr, mv_par01, mv_par02, mv_p
 	Local cFilOri      := ''
 	Local cGrpComLog   := ''
 	Local cTpSemAprv   := ''
-	Local cTpSemMed    := '' 
+	Local cTpSemMed    := ''
 	Local cUserLog     := ''
 	Local nCont        := 0
 	Local nContGrp     := 0
@@ -51,8 +51,10 @@ User Function F1200701(lExibeTela, lVerUsrLog, lVerCtr, mv_par01, mv_par02, mv_p
 	Private cArqTrab   := GetNextAlias()
 	Private oDlgMark
 	Private oMrkBrowse
+	Private aZZZ := {}
 	Default lExibeTela := .T.
 	Default lVerUsrLog := .T.
+
 
 	cFilOri		:= xFilial('SC1')
 	cUserLog	:= RetCodUsr()
@@ -177,7 +179,8 @@ User Function F1200701(lExibeTela, lVerUsrLog, lVerCtr, mv_par01, mv_par02, mv_p
 
 	//cQuery += " AND SC1.C1_FILIAL = '01310011' AND SC1.C1_NUM = '002338' "
 
-
+	cQuery += " AND SC1.C1_FILIAL = '01AJ0001' "
+	cQuery += " AND SC1.C1_EMISSAO > '20251001'"
 	cQuery += "ORDER BY "  + SqlOrder(SC1->(IndexKey()))
 
 	cChave		:= SC1->(IndexKey())
@@ -338,6 +341,8 @@ User Function F1200701(lExibeTela, lVerUsrLog, lVerCtr, mv_par01, mv_par02, mv_p
 	If Type("oDlgMark") != "U"
 		oTempTable:Delete()
 	EndIf
+
+	fLimpaZZZ()
 
 Return NIL
 /*/{Protheus.doc} RetNomeFil
@@ -516,6 +521,8 @@ Static Function xSqlToTrb(cQuery, aStru, cArqTrab,lExibeTela)
 
 	While (cAlias2)->(!EOF())
 
+		AADD(aZZZ,(cAlias2)->RECNO)
+
 		SC1->(DbGoto((cAlias2)->RECNO))
 		If SC1->C1_QUJE == 0
 
@@ -553,5 +560,22 @@ if TCSqlExec(cQry) < 0
 	EndIf
 EndIf
 /*/
+
+Return
+
+
+Static Function fLimpaZZZ()
+
+	Local nX := 01
+
+	DbSelectArea("SC1")
+	For nX := 01 To Len(aZZZ)
+		SC1->(DbGoto(aZZZ[nX]))
+		If SC1->C1_XNUMMED == "ZZZZZZ"
+			RecLock("SC1",.F.)
+			SC1->C1_XNUMMED := "      "
+			SC1->(MsUnlock())
+		EndIf
+	Next nX
 
 Return
