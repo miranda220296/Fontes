@@ -162,6 +162,7 @@ Static Function BuscaMov(aP26, lProcT)
 		cQuery := " SELECT DISTINCT P26_FILIAL,P26_CODFEC, P26_DTFECH, P26_QTDTOT, P26_STATUS, P26_OPER "  // fazer versão para oracle
 		cQuery += "  FROM F0703001 "
 		cQuery += "  WHERE P26_STATUS = '1' "
+		//cQuery += " WHERE P26_CODFEC = '2025-10-01 10:46:35' "
 		If ! lProcT
 			cQuery += "    AND P26_FILIAL = '" + cFilIni + "' "
 		EndIf

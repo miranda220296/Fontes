@@ -1870,7 +1870,7 @@ Return .T.
 	//Valida condição de pagamento de acordo com a nova política da empresa
 	//Lucas Miranda de Aguiar 15/06/2025
 User Function fchkcond()
-
+ 
 Local aRet := {}
 
 aRet := U_MSCHKCOND(M->C7_COND,M->C7_FORNECE,M->C7_LOJA,,,,,,M->C7_XDTEXCE,M->C7_XDTEMI)  

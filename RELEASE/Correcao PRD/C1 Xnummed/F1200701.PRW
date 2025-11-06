@@ -164,7 +164,8 @@ User Function F1200701(lExibeTela, lVerUsrLog, lVerCtr, mv_par01, mv_par02, mv_p
 	EndIf
 
 	If ISINCALLSTACK('U_F1200600') //Quando vier de medição schedule, incrementa filtros
-		cQuery += "AND SC1.C1_FILIAL = '" + mv_par01 + "' " + CRLF
+		//cQuery += "AND SC1.C1_FILIAL = '" + mv_par01 + "' " + CRLF
+		cQuery += "AND SC1.C1_FILIAL = '" + cFilAnt + "' " + CRLF
 		//Performance de rotina para pegar SCS de até 2 meses schedule - Lucas Miranda 16/09/2024
 		cQuery += " AND TO_DATE(C1_EMISSAO, 'YYYYMMDD') BETWEEN TRUNC(SYSDATE) - "+cDias+ " AND TRUNC(SYSDATE) "
 	EndIf
@@ -179,8 +180,10 @@ User Function F1200701(lExibeTela, lVerUsrLog, lVerCtr, mv_par01, mv_par02, mv_p
 
 	//cQuery += " AND SC1.C1_FILIAL = '01310011' AND SC1.C1_NUM = '002338' "
 
-	cQuery += " AND SC1.C1_FILIAL = '01AJ0001' "
-	cQuery += " AND SC1.C1_EMISSAO > '20251001'"
+	//cQuery += " AND SC1.C1_FILIAL = '01AJ0001' "
+	If !Isblind()
+		cQuery += " AND SC1.C1_EMISSAO > '20250101'"
+	EndIf
 	cQuery += "ORDER BY "  + SqlOrder(SC1->(IndexKey()))
 
 	cChave		:= SC1->(IndexKey())
