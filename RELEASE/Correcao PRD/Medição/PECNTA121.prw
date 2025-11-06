@@ -85,11 +85,7 @@ User Function CNTA121()
         através da função CN121MedEnc, pra isso utilizamos a função FwIsInCallStack
          */
 		//If cIdPonto == 'CN121ATS'
-<<<<<<< HEAD
-		//	U_() // Rotina a ser executado por ultimo e ela não tem efeito de validação e sim de preparação
-=======
 		//	U_F1200401() // Rotina a ser executado por ultimo e ela não tem efeito de validação e sim de preparação
->>>>>>> c19d0ad3bb4842dac756dc7e91a7dd8ebd441b88
 		//elseif cIdPonto == 'CN121PED'
 		//	xRet := U_F1200718()//Ponto de entrada para tratamento de campos do pedido de compra
 
@@ -99,22 +95,14 @@ User Function CNTA121()
 			nXMulta := oModelCNE:GetValue("CNE_XMULTA")
 			nXJuros := oModelCNE:GetValue("CNE_XJUROS")
 
-<<<<<<< HEAD
-		/*/	If Type("__XGTTES") == "C"
-=======
 
 			If Type("__XGTTES") == "C" .And. !IsInCallStack("U_F1200709")
->>>>>>> c19d0ad3bb4842dac756dc7e91a7dd8ebd441b88
 				If !Empty(__XGTTES)
 					If cFilAnt <> __XGTTES
 						cFilAnt := __XGTTES
 					EndIf
 				EndIf
-<<<<<<< HEAD
-			EndIf/*/
-=======
 			EndIf
->>>>>>> c19d0ad3bb4842dac756dc7e91a7dd8ebd441b88
 
 			DbSelectArea("P35")
 			DbSetOrder(1)
@@ -350,8 +338,8 @@ User Function CNTA121()
 					While !( cAliasAl )->( Eof() )
 						cAprov := ( cAliasAl )->AL_APROV
 						lCria := fValAprov(cAprov)
-						cFornece := Posicione("CNA",1,xFilial("CNA")+AllTrim(CND->CND_CONTRA)+CND->CND_REVISA,"CNA_FORNEC")
-						cLojaFor := Posicione("CNA",1,xFilial("CNA")+AllTrim(CND->CND_CONTRA)+CND->CND_REVISA,"CNA_LJFORN")
+						cFornece := Posicione("CNA",1,CND->CND-FILCTR+AllTrim(CND->CND_CONTRA)+CND->CND_REVISA,"CNA_FORNEC")
+						cLojaFor := Posicione("CNA",1,CND->CND-FILCTR+AllTrim(CND->CND_CONTRA)+CND->CND_REVISA,"CNA_LJFORN")
 						cNFornec := AllTrim(Posicione("SA2",1,xFilial("SA2")+AllTrim(cFornece)+AllTrim(cLojaFor),"A2_NOME"))
 						If lCria
 							Reclock("SCR",.T.)
@@ -707,16 +695,10 @@ User Function xGctGatTes(cCodProd,lTE)
 		EndIf
 	EndIf
 
-<<<<<<< HEAD
-	__XGTTES := cFilant
-	cFilAnt := FwFldGet("CND_FILCTR")
-
-=======
 	If !IsInCallStack("U_F1200709")
 		__XGTTES := cFilant
 		cFilAnt := FwFldGet("CND_FILCTR")
 	Endif
->>>>>>> c19d0ad3bb4842dac756dc7e91a7dd8ebd441b88
 
 
 	Default cCodProd	:= ""

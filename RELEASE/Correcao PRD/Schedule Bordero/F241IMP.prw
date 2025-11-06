@@ -78,7 +78,7 @@ User Function F241IMP()
 	EndIf
 
 	//If !__lF241SL3
-	If SE2->E2_TIPO == "FT"
+	If SE2->E2_PREFIXO == "NEG"
 		Reclock("SE2",.F.)
 			SE2->E2_SALDO := SE2->E2_SALDO - (nPis+nCofins+nCsll)
 		SE2->(MsUnLock())
