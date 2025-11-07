@@ -338,8 +338,8 @@ User Function CNTA121()
 					While !( cAliasAl )->( Eof() )
 						cAprov := ( cAliasAl )->AL_APROV
 						lCria := fValAprov(cAprov)
-						cFornece := Posicione("CNA",1,xFilial("CNA")+AllTrim(CND->CND_CONTRA)+CND->CND_REVISA,"CNA_FORNEC")
-						cLojaFor := Posicione("CNA",1,xFilial("CNA")+AllTrim(CND->CND_CONTRA)+CND->CND_REVISA,"CNA_LJFORN")
+						cFornece := Posicione("CNA",1,CND->CND-FILCTR+AllTrim(CND->CND_CONTRA)+CND->CND_REVISA,"CNA_FORNEC")
+						cLojaFor := Posicione("CNA",1,CND->CND-FILCTR+AllTrim(CND->CND_CONTRA)+CND->CND_REVISA,"CNA_LJFORN")
 						cNFornec := AllTrim(Posicione("SA2",1,xFilial("SA2")+AllTrim(cFornece)+AllTrim(cLojaFor),"A2_NOME"))
 						If lCria
 							Reclock("SCR",.T.)

@@ -81,6 +81,8 @@ User Function XVLDRV300(oobj)
 			If oObj:GetModel(aMasters[nY]):GetStruct():afields[nZ][3] == "CN9_UNVIGE"
 				Loop
 			EndIf
+<<<<<<< HEAD
+=======
 			If oObj:GetModel(aMasters[nY]):GetStruct():afields[nZ][3] == "CN9_LOGDAT"
 				Loop
 			EndIf
@@ -91,6 +93,7 @@ User Function XVLDRV300(oobj)
 			If "CN9_LOG" $ oObj:GetModel(aMasters[nY]):GetStruct():afields[nZ][3]
 				Loop
 			EndIf
+>>>>>>> c19d0ad3bb4842dac756dc7e91a7dd8ebd441b88
 
 			If (oObj:GetModel(aMasters[nY]):GetStruct():afields[nZ][3] == "CN9_VIGE" .Or. oObj:GetModel(aMasters[nY]):GetStruct():afields[nZ][3] == "CN9_JUSTIF" .Or. oObj:GetModel(aMasters[nY]):GetStruct():afields[nZ][3] == "CN9_TIPREV")
 				If (oobj:GetValue( aMasters[nY], oObj:GetModel(aMasters[nY]):GetStruct():afields[nZ][3]) <> (Left(oObj:GetModel(aMasters[nY]):GetStruct():afields[nZ][3],3))->&(oObj:GetModel(aMasters[nY]):GetStruct():afields[nZ][3]) .And. oObj:GetModel(aMasters[nY]):GetStruct():afields[nZ][3] == "CN9_VIGE")

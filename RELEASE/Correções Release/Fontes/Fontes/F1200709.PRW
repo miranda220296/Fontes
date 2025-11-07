@@ -44,10 +44,13 @@ User Function F1200709(aAllCab,aItsGCT,aId,cContrat,cRevisa, cNewfil )
 	Local cCodCTR   := "CNTA121EXEMP002"
 	Local aMsgDeErro:= {}
 	Local lRet      := .F.
+<<<<<<< HEAD
+=======
 <<<<<<< HEAD:RELEASE/Correções Release/Fontes/Fontes/F1200709.PRW
 =======
 	Local cCdPgn9   := ""
 >>>>>>> cbf789e6a3aee7326c13eac997b92b836038463e:RELEASE/Fontes/Fontes/F1200709.PRW
+>>>>>>> c19d0ad3bb4842dac756dc7e91a7dd8ebd441b88
 // --------------------------------------------------------
 // [ Chamado 7023201 - inicio - 1/3 ]
 // --------------------------------------------------------
@@ -78,11 +81,15 @@ User Function F1200709(aAllCab,aItsGCT,aId,cContrat,cRevisa, cNewfil )
 
 		cFilOld := cFilAnt
 		cFilAnt := cNewfil
+<<<<<<< HEAD
+
+=======
 <<<<<<< HEAD:RELEASE/Correções Release/Fontes/Fontes/F1200709.PRW
 
 =======
 		cCdPgn9 := CN9->CN9_CONDPG
 >>>>>>> cbf789e6a3aee7326c13eac997b92b836038463e:RELEASE/Fontes/Fontes/F1200709.PRW
+>>>>>>> c19d0ad3bb4842dac756dc7e91a7dd8ebd441b88
 		Begin Transaction
 			CND->(DbSetOrder(04))
 			If	CND->(DbSeek(cNewfil + aAllCab[01][10][02]) )
@@ -155,11 +162,14 @@ User Function F1200709(aAllCab,aItsGCT,aId,cContrat,cRevisa, cNewfil )
 					oModel:SetValue("CNDMASTER","CND_LJFORN",aallcab[1][AScan(aallcab[1], {|X| AllTrim(x[1]) == "CND_LJFORN"})][2])
 					oModel:SetValue("CNDMASTER","CND_FILIAL",aallcab[1][AScan(aallcab[1], {|X| AllTrim(x[1]) == "CND_FILIAL"})][2])
 					oModel:SetValue("CNDMASTER","CND_PARCEL",aallcab[1][AScan(aallcab[1], {|X| AllTrim(x[1]) == "CND_PARCEL"})][2])
+<<<<<<< HEAD
+=======
 <<<<<<< HEAD:RELEASE/Correções Release/Fontes/Fontes/F1200709.PRW
 =======
 					oModel:SetValue("CNDMASTER","CND_CONDPG",cCdPgn9)
 					oModel:SetValue("CNDMASTER","CND_CONTRA",CN9->CN9_NUMERO)
 >>>>>>> cbf789e6a3aee7326c13eac997b92b836038463e:RELEASE/Fontes/Fontes/F1200709.PRW
+>>>>>>> c19d0ad3bb4842dac756dc7e91a7dd8ebd441b88
 					//oModel:SetValue("CNDMASTER","CND_RCCOMP"    ,"1")//Selecionar compet�ncia
 
 
@@ -204,7 +214,10 @@ User Function F1200709(aAllCab,aItsGCT,aId,cContrat,cRevisa, cNewfil )
 
 					If (oModel:VldData()) /*Valida o modelo como um todo*/
 						oModel:CommitData()
+<<<<<<< HEAD
+=======
 						//oModel:SetValue("CNDMASTER","CND_CONDPG","")
+>>>>>>> c19d0ad3bb4842dac756dc7e91a7dd8ebd441b88
 					EndIf
 				EndIf
 
@@ -222,7 +235,10 @@ User Function F1200709(aAllCab,aItsGCT,aId,cContrat,cRevisa, cNewfil )
 					cNumMed := CND->CND_NUMMED
 					oModel:DeActivate()
 					lRet := CN121Encerr(.T.) //Realiza o encerramento da medi��o
+<<<<<<< HEAD
+=======
 					//lRet := xCN121MedEnc(CND->(RECNO()))
+>>>>>>> c19d0ad3bb4842dac756dc7e91a7dd8ebd441b88
 				EndIf
 			EndIf
 
@@ -596,6 +612,8 @@ Static Function ValidVigen()
 Return lResult
 
 
+<<<<<<< HEAD
+=======
 
 
 
@@ -1166,3 +1184,4 @@ EndIf
 UnLockByName("CN121"+cFilCND+cChave,.T.,!Empty(cFilCND),.T.)
 
 Return lRet
+>>>>>>> c19d0ad3bb4842dac756dc7e91a7dd8ebd441b88
