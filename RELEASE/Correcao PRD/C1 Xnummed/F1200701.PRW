@@ -574,9 +574,10 @@ Static Function fLimpaZZZ()
 	DbSelectArea("SC1")
 	For nX := 01 To Len(aZZZ)
 		SC1->(DbGoto(aZZZ[nX]))
-		If SC1->C1_XNUMMED == "ZZZZZZ"
+		If SC1->C1_XNUMMED == "ZZZZZZ" .Or. (SC1->C1_XNUMMED == "XXXXXX".And. SC1->C1_XUSR == __cUserID)
 			RecLock("SC1",.F.)
-			SC1->C1_XNUMMED := "      "
+			SC1->C1_XNUMMED := ""
+			SC1->C1_XUSR := ""
 			SC1->(MsUnlock())
 		EndIf
 	Next nX

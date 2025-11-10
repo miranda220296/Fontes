@@ -53,9 +53,11 @@ User Function F1400102(cCampo,nModo)
 		Return //Os campos não existem, portanto não serão populados.
 	EndIf
 
-	If cAlias == "SC7" .And. !INCLUI .And. !ALTERA
+If !IsBlind()
+	If cAlias == "SC7" .And. !INCLUI .And. !ALTERA .And. !IsInCallStack("MATA235")
 		Return
 	EndIf
+EndIf
 
 	RecLock(cAlias,.F.)
 	If Empty(&((cAlias)->(cCampoI)))
