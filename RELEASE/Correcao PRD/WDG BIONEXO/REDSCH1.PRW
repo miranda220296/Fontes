@@ -13,7 +13,7 @@
 User Function REDSCH1(aPedidos)
 
 	//cTime := "HORA INICIAL " + Time() + " " + CRLF
-	Private aRet := { "1", "OK"}
+	Private ARETBIO := { "1", "OK"}
 	Private aItensSc := {}
 	Private cItensSc := ""
 
@@ -22,7 +22,7 @@ User Function REDSCH1(aPedidos)
 	//cTime += "HORA FINAL " + Time() + " " + CRLF
 
 	//MemoWrite( "C:\\Temp\\testtime.txt", cTime )
-Return aRet
+Return ARETBIO
 
 Static Function fExec(aPedidos)
 
@@ -70,7 +70,7 @@ Static Function fExec(aPedidos)
 		While !(lFree := MayIUseCode(cChaveBio))
 			Sleep(2000)
 			If ++nTent > 50
-				aRet := { "2", " Controle de semáforo - Já existe uma integração desta filial/ID Bionexo em execução."}
+				ARETBIO := { "2", " Controle de semáforo - Já existe uma integração desta filial/ID Bionexo em execução."}
 				Exit
 			Endif
 		Enddo
@@ -99,7 +99,7 @@ Static Function fExec(aPedidos)
 		Else
 			//U_REDA006(aPedidos[nX][nFILIAL][2], "2", aPedidos[nX][nNUMSC][2], aPedidos[nX][nITEMSC][2],,"Fornecedor não existe : " + aPedidos[nX][nCGC][2], aPedidos[nX][nXIDBIO][2])
 //				U_WsLogBio("REDSCH1", 2,"FORNECEDOR NAO EXISTE: " + aPedidos[nX][nCGC][2])
-			aRet 	:= { "2", "FORNECEDOR NAO EXISTE: " + aPedidos[nX][nCGC][2]}
+			ARETBIO 	:= { "2", "FORNECEDOR NAO EXISTE: " + aPedidos[nX][nCGC][2]}
 			Loop
 		EndIf
 
@@ -108,17 +108,17 @@ Static Function fExec(aPedidos)
 		cXIDBio := aPedidos[1][nXIDBIO][2]
 		For nY := 01 To Len(aChaveSc)
 			If !U_fBuscaSolic(aChaveSc[nY], cXIDBio)
-				aRet := { "2", " SOLICITAÇÃO NÃO FOI ENCONTRADA/OU JÁ ESTA TOTALMENTE ATENDIDA. "}
+				ARETBIO := { "2", " SOLICITAÇÃO NÃO FOI ENCONTRADA/OU JÁ ESTA TOTALMENTE ATENDIDA. "}
 				Exit
 			/*/Else
 				If SC1->C1_QUANT < aPedidos[nX][nQTSEGUM][2]
-					aRet := { "2", "A QUANTIDADE ENVIADA NO XML É MAIOR DO QUE A QUANTIDADE DA SC. CHAVE SC: " + aChaveSc[nY]}
+					ARETBIO := { "2", "A QUANTIDADE ENVIADA NO XML É MAIOR DO QUE A QUANTIDADE DA SC. CHAVE SC: " + aChaveSc[nY]}
 					Exit
 				EndIf/*/
 			EndIf
 		Next nY
 
-		If aRet[1] == "2"
+		If ARETBIO[1] == "2"
 			Return
 		EndIf
 
@@ -155,10 +155,10 @@ Static Function fExec(aPedidos)
 	//Filial+LocalEst+Fornecedor+Loja+XIDBIO+cESTOQUE
 
 	If Len(aTransf) == 0
-		If Len(aRet) == 0
+		If Len(ARETBIO) == 0
 			cMsg := "NÃO FOI INCLUÍDO NENHUM ITEM DO CARRINHO NO PROTHEUS, POR FAVOR, VERIFICAR O LOG DO SISTEMA"
 			//U_WsLogBio("REDSCH1", 2, cMsg)
-			aRet := { "2", cMsg}
+			ARETBIO := { "2", cMsg}
 			//U_REDA006(aPedidos[01][nFILIAL][2], "2", aPedidos[01][nNUMSC][2],,,cMsg, aPedidos[01][nXIDBIO][2])
 		EndIf
 	EndIf
@@ -374,13 +374,13 @@ Static Function fImporta(aTemp)
 		//cIdProc := AllTrim(FWUUIDV4())
 		cMsg := Mostraerro("\temp", "ERROR_" + Time() + ".log") 	
 		//U_REDA006(cFilAnt, "2",,,,cMsg, aTemp[01][05])
-		aRet := { "2", cMsg}		
+		ARETBIO := { "2", cMsg}		
 	EndIf
 	
 	//U_WsLogBio("REDSCH1", 3, cMsg)
 	cFilAnt := cFilBkp
 
-Return aRet
+Return ARETBIO
 *-----------------------------------------------------*
 Static Function fFinalSc(aChave, cPedido, cItem)
 *-----------------------------------------------------*

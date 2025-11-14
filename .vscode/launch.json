@@ -8,13 +8,16 @@
 			"program": "${command:AskForProgramName}",
 			"isMultiSession": true,
 			"enableTableSync": true,
-			"smartclientUrl": "http://protheus12devbo.rededor.com.br:16096/",
+			"smartclientUrl": "http://10.25.32.184:13093/",
 			"enableMultiThread": true
 		}
 	],
 	"lastPrograms": [
 		{
 			"label": "SIGAMDI"
+		},
+		{
+			"label": "APSDU"
 		}
 	],
 	"lastProgramExecuted": "SIGAMDI",

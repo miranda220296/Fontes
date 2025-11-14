@@ -54,7 +54,11 @@ User Function F1400102(cCampo,nModo)
 	EndIf
 
 If !IsBlind()
-	If cAlias == "SC7" .And. !INCLUI .And. !ALTERA .And. !IsInCallStack("MATA235")
+	If cAlias == "SC7" .And. !INCLUI .And. !ALTERA .And. !IsInCallStack("U_REDA4SEL") .And. !IsInCallStack("MATA235") .And. !IsInCallStack("MATA103") .And. !IsInCallStack("MATA140") .And. !IsInCallStack("MATA094") .And. !IsInCallStack("U_XMATA094")
+		Return
+	EndIf
+ 
+	If cAlias == "SC7" .And. ALTERA .And. !IsInCallStack("U_REDA4SEL") .And. !IsInCallStack("MATA235") .And. !IsInCallStack("MATA103") .And. !IsInCallStack("MATA140") .And. !IsInCallStack("MATA094") .And. !IsInCallStack("U_XMATA094")
 		Return
 	EndIf
 EndIf

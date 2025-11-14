@@ -72,7 +72,7 @@ User Function F241IMP()
 		(cAliasTRB)->(DBSkip())
 
 	EndDo
- 
+  
 	If Select(cAliasTRB) > 0
 		(cAliasTRB)->(DBCloseArea())
 	EndIf
